@@ -24,7 +24,7 @@ const authOptions: NextAuthOptions = {
     }),
   ],
 
-  secret: process.env.SECRET,
+  secret: "12238393932-2",
 };
 
 const handler = NextAuth(authOptions);
