@@ -1,10 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
-import image from "../public/photo-camera-tools-symbol-svgrepo-com.svg";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NextAuthProvider from "@/components/NextAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,18 +17,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: any;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} `}>
+    <html lang="en">
+      <body className={`${inter.className} `}>
+        <NextAuthProvider>
           <Header />
           {children}
           <Footer />
-        </body>
-      </html>
-    </ClerkProvider>
+        </NextAuthProvider>
+      </body>
+    </html>
   );
 }
