@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import Imagecard from "./Imagecard";
 import { Input } from "./ui/input";
