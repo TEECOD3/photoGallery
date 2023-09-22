@@ -9,7 +9,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 type Props = {
-  imagesdata: imageprops[];
+  imagesdata?: imageprops[];
 };
 
 const Sortableuser = ({ items }) => {
