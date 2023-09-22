@@ -4,7 +4,7 @@ import Image from "next/image";
 import imegs from "../public/traditional-coffee-cup-heart-shaped-steam-rustic-wood-70228609.webp";
 
 type Props = {
-  imagedat: imageprops;
+  imagedat?: imageprops;
 };
 
 const Imagecard = (props: Props) => {
@@ -18,7 +18,7 @@ const Imagecard = (props: Props) => {
             shimmer(380, 250)
           )}`}
           priority
-          src={imagedat?.urls.regular}
+          src={imegs}
           alt="imagecard"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

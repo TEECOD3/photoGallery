@@ -4,18 +4,27 @@ import CredentialsProvider from "next-auth/providers/credentials";
 const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-
+      name: "username and password on placeholders",
       credentials: {
-        email: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        username: {
+          label: "username",
+          type: "email",
+          placeholder: "use user@example.com",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "use 1Password",
+        },
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        if (!credentials || !credentials.email || !credentials.password)
+        if (!credentials || !credentials.username || !credentials.password)
           return null;
 
-        const user = users.find((items) => items.email === credentials.email);
+        const user = users.find(
+          (items) => items.username === credentials.username
+        );
         if (user?.password === credentials.password) {
           return user;
         }
