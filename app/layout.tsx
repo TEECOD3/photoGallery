@@ -1,11 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Unbounded } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NextAuthProvider from "@/components/NextAuthProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const unbounded = Unbounded({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Image Gallery ",
@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} `}>
+      <body className={`${unbounded.className} `}>
         <NextAuthProvider>
           <Header />
           {children}
