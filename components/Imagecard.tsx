@@ -1,8 +1,9 @@
 import { shimmer, toBase64 } from "@/lib/image";
 import React from "react";
 import Image from "next/image";
-import imegs from "../public/traditional-coffee-cup-heart-shaped-steam-rustic-wood-70228609.webp";
 import { Tags } from "lucide-react";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
 
 type Props = {
   imagedat?: any;
@@ -10,10 +11,23 @@ type Props = {
 
 const Imagecard = (props: Props) => {
   const { imagedat } = props;
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: imagedat.id });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
 
   return (
     <div>
-      <div className=" h-[420px] lg:h-[380px] w-full relative overflow-hidden rounded-[10px] border-2 border-gray-200 bg-pink-200">
+      <div
+        className=" h-[420px] lg:h-[380px] w-full relative overflow-hidden rounded-[10px] border-2 border-gray-200 bg-pink-200"
+        style={style}
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+      >
         <Image
           placeholder="blur"
           blurDataURL={`data:image/svg+xml;base64, ${toBase64(

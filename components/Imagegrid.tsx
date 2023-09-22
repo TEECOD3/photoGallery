@@ -6,6 +6,7 @@ import { imageData, tags } from "@/Data/data";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
+  arrayMove,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -13,49 +14,40 @@ import { CSS } from "@dnd-kit/utilities";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 type Props = {
-  imagesdata?: imageprops[];
-};
-
-const Sortableuser = ({ items }: any) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: items });
-
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
-
-  return items.map((image: any, i: any) => (
-    <div
-      className=""
-      style={style}
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      key={i}
-    >
-      <Imagecard imagedat={image} />
-    </div>
-  ));
+  imagesdata?: any;
 };
 
 const Imagegrid = (props: Props) => {
   const [items, setitems] = useState(imageData);
   const [tagName, setTagName] = useState("");
+  const [originalItems, setOriginalItems] = useState(imageData);
   const router = useRouter();
 
-  const onDragEnd = (event: any) => {
-    console.log("ondragend", event);
-  };
   const handleSearch = (tag: string) => {
     if (tag === " ") {
-      setitems(imageData);
+      setitems(originalItems);
+      return;
+    } else {
+      const filteredImages = items.filter((image) => image.tags.includes(tag));
+
+      setitems(filteredImages);
+    }
+    setTagName("");
+  };
+
+  const onDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id === over.id) {
       return;
     }
-    const filteredImages = items.filter((image) => image.tags.includes(tag));
 
-    setitems(filteredImages);
+    setitems((items) => {
+      const oldindex = items.findIndex((item) => item.id === active?.id);
+      const newindex = items.findIndex((item) => item.id === over?.id);
+      return arrayMove(items, oldindex, newindex);
+    });
   };
+
   return (
     <main className="max-w-[80%] mx-auto ">
       <div className="w-full flex">
@@ -82,7 +74,9 @@ const Imagegrid = (props: Props) => {
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
         <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <Sortableuser items={items} />
+            {items.map((item) => (
+              <Imagecard imagedat={item} key={item.id} />
+            ))}
           </SortableContext>
         </DndContext>
       </div>
