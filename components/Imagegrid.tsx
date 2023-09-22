@@ -7,10 +7,9 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
-  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 type Props = {
@@ -20,19 +19,19 @@ type Props = {
 const Imagegrid = (props: Props) => {
   const [items, setitems] = useState(imageData);
   const [tagName, setTagName] = useState("");
-  const [originalItems, setOriginalItems] = useState(imageData);
+
   const router = useRouter();
 
   const handleSearch = (tag: string) => {
-    if (tag === " ") {
-      setitems(originalItems);
+    if (tag === "") {
+      setitems(imageData);
       return;
-    } else {
-      const filteredImages = items.filter((image) => image.tags.includes(tag));
-
-      setitems(filteredImages);
     }
-    setTagName("");
+    const filteredImages = imageData.filter((image) =>
+      image.tags.includes(tag)
+    );
+
+    setitems(filteredImages);
   };
 
   const onDragEnd = (event: any) => {
@@ -71,15 +70,29 @@ const Imagegrid = (props: Props) => {
         </form>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
-        <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-          <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            {items.map((item) => (
-              <Imagecard imagedat={item} key={item.id} />
-            ))}
-          </SortableContext>
-        </DndContext>
-      </div>
+      {items.length === 0 ? (
+        <div className=" w-full flex h-[80vh] items-center justify-center">
+          <p>
+            😒No animals found for
+            <span className=" ml-3 font-bold text-xl text-gray-400">
+              {tagName}
+            </span>
+          </p>
+        </div>
+      ) : (
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
+          <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+            <SortableContext
+              items={items}
+              strategy={verticalListSortingStrategy}
+            >
+              {items.map((item) => (
+                <Imagecard imagedat={item} key={item.id} />
+              ))}
+            </SortableContext>
+          </DndContext>
+        </div>
+      )}
     </main>
   );
 };
