@@ -22,7 +22,7 @@ const Imagecard = (props: Props) => {
   return (
     <div>
       <div
-        className=" h-[420px] lg:h-[380px] w-full relative overflow-hidden rounded-[10px] border-2 border-gray-200 bg-pink-200"
+        className=" touch-none h-[420px] lg:h-[380px] w-full relative overflow-hidden rounded-[10px] border-2 border-gray-200 bg-pink-200"
         style={style}
         ref={setNodeRef}
         {...attributes}
